@@ -7,7 +7,7 @@ import {Motion} from "/brickbreaker?Motion.js";
 import {Controller} from "/brickbreaker?Controller.js";
 import {Engine} from "/brickbreaker?Engine.js";
 
-function initializeGame() {
+export function initializeGame() {
     const display = new Display();
     const gameObjects = new GameObjects(0, display);
     const motion = new Motion(gameObjects);
@@ -15,7 +15,9 @@ function initializeGame() {
     window.addEventListener("keydown", controller.handler);
     window.addEventListener("keyup", controller.handler);
     const engine = new Engine(display, gameObjects, controller,  motion);
+    const canvasElement = document.getElementById("game-canvas");
 }
+window.initializeGame = initializeGame;
 
 if(document.readyState === "complete"){
     console.log("Ready State was complete, initializing directly.")
@@ -24,3 +26,5 @@ if(document.readyState === "complete"){
     console.log("Ready State was not complete, adding listener.")
     window.addEventListener('load', initializeGame);
 }
+
+

@@ -14,11 +14,10 @@ function mainLoop(engine){
         engine.firstLoop = false;
         engine.needResize = true;
     }
-
     setTimeout(function(){
         requestAnimationFrame(
             function(){mainLoop(engine)});
-    }, engine.frames);
+    }, engine.go.isPaused() ? engine.frames * 4 : engine.frames);
 
 }
 
@@ -32,6 +31,7 @@ export class Engine{
         this.controller = controller;
         this.firstLoop = true;
         this.needResize = false;
+
 
         this.display = display;
         mainLoop(this);
@@ -62,6 +62,7 @@ export class Engine{
     }
 
     updateDeath(){
+        this.display
         this.display.drawOrder(this.go);
         this.display.drawDead();
     }
