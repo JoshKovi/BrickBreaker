@@ -34,6 +34,7 @@ public class BBhtml extends StaticHtml {
 
     public BufferedImage BASE_LOGO;
     public HashMap<String, String> resourceMap = new HashMap<>();
+    protected boolean successfulGet;
 
     //Default Resources
     private static final String DEFAULT_HTML = "<!DOCTYPE html>\n" +
@@ -49,12 +50,15 @@ public class BBhtml extends StaticHtml {
     public static BBhtml getInstance(){
         if(bb == null){
             bb = new BBhtml();
+        } else if(!bb.successfulGet){
+            bb.successfulGet = bb.getRequiredResources();
+            bb.updateResourceMap();
         }
         return bb;
     }
 
     private BBhtml(){
-        getRequiredResources();
+        successfulGet = getRequiredResources();
         updateResourceMap();
     }
 
@@ -62,7 +66,7 @@ public class BBhtml extends StaticHtml {
         return getResourcePath(resource, BBhtml.class);
     }
 
-    private void getRequiredResources() {
+    protected boolean getRequiredResources() {
         try{
             Map<String, String> resources = HttpClientSetup.getInstance()
                     .getResourcesFromMain(List.of("/BasePage.html", "/home.css", "/home.js", "BasicLogo.PNG", "/404.html"));
@@ -73,6 +77,7 @@ public class BBhtml extends StaticHtml {
             String base64Img = resources.getOrDefault("BasicLogo.PNG", "");
             if(base64Img.isBlank()) {
                 replacePaths();
+                BASE_LOGO = new BufferedImage(0,0,1);
                 throw new NullPointerException("Img is empty!");
             }
             byte[] imgBytes = Base64.getDecoder().decode(base64Img);
@@ -80,19 +85,21 @@ public class BBhtml extends StaticHtml {
                 BASE_LOGO = ImageIO.read(is);
             }
             replacePaths();
+            return true;
         } catch (NullPointerException e){
             Logger.getLogger("BBLogger").exception().log("NPE during startup of BB!", e);
         } catch (Exception e) {
             Logger.getLogger("BBLogger").exception().log("Exception occurred trying to retrieve resources, using backup!", e);
             BASE_HTML = BASE_HTML.isBlank() ? DEFAULT_HTML : BASE_HTML;
         }
+        return false;
     }
 
-    private void updateResourceMap() {
-        resourceMap.put("", String.format(BASE_HTML, CANVAS_HTML));
+    protected void updateResourceMap() {
+        resourceMap.put("", String.format(this.BASE_HTML, CANVAS_HTML));
         resourceMap.put("embedded", CANVAS_HTML);
-        resourceMap.put("home.js", BASE_JS);
-        resourceMap.put("home.css", BASE_CSS);
+        resourceMap.put("home.js", this.BASE_JS);
+        resourceMap.put("home.css", this.BASE_CSS);
         resourceMap.put("Display.js", DISPLAY);
         resourceMap.put("GameObjects.js", GAME_OBJECTS);
         resourceMap.put("Motion.js", MOTION);
