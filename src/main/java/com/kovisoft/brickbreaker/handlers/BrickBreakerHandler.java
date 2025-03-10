@@ -1,5 +1,6 @@
 package com.kovisoft.brickbreaker.handlers;
 
+import com.kovisoft.logger.exports.LoggerFactory;
 import com.kovisoft.servercommon.baseabstract.AbstractHandler;
 import com.kovisoft.brickbreaker.javaHtml.BBhtml;
 import com.kovisoft.servercommon.utilities.RequestHandler;
@@ -12,7 +13,7 @@ import java.util.Optional;
 public class BrickBreakerHandler extends AbstractHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        logger.info().log("User accessing brickbreaker!");
+        logger.info("User accessing brickbreaker!");
         BBhtml bb = BBhtml.getInstance();
         logRequest(exchange);
         HashMap<String, String> params = RequestHandler.getUrlParameters(exchange);

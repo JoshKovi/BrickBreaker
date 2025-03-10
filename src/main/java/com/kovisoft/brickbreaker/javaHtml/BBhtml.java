@@ -1,7 +1,7 @@
 package com.kovisoft.brickbreaker.javaHtml;
 
 import com.kovisoft.brickbreaker.utils.HttpClientSetup;
-import com.kovisoft.logger.Logger;
+import com.kovisoft.logger.exports.LoggerFactory;
 import com.kovisoft.servercommon.interfaces.StaticHtml;
 import com.kovisoft.servercommon.utilities.FileUtilities;
 
@@ -87,9 +87,9 @@ public class BBhtml extends StaticHtml {
             replacePaths();
             return true;
         } catch (NullPointerException e){
-            Logger.getLogger("BBLogger").exception().log("NPE during startup of BB!", e);
+            LoggerFactory.getLogger("BBLogger").except("NPE during startup of BB!", e);
         } catch (Exception e) {
-            Logger.getLogger("BBLogger").exception().log("Exception occurred trying to retrieve resources, using backup!", e);
+            LoggerFactory.getLogger("BBLogger").except("Exception occurred trying to retrieve resources, using backup!", e);
             BASE_HTML = BASE_HTML.isBlank() ? DEFAULT_HTML : BASE_HTML;
         }
         return false;
