@@ -6,7 +6,7 @@
 
     <groupId>com.kovisoft</groupId>
     <artifactId>BrickBreaker</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -45,7 +45,13 @@
         <dependency>
             <groupId>com.kovisoft</groupId>
             <artifactId>ServerCommon</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.kovisoft</groupId>
+            <artifactId>PortWebDatabase</artifactId>
+            <version>1.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

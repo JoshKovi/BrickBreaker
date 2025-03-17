@@ -1,0 +1,46 @@
+
+<style>
+    #notification{
+        width: 20em;
+        height: 25em;
+        position: absolute;
+        z-index: 85;
+        background-color: #ffffff;
+        opacity: 0.98;
+        justify-items: center;
+        align-content: center;
+        border: .5em dashed #51c2fa;
+        text-align: center;
+        top: 30%;
+        left:50%;
+    }
+    #form-info{
+        position: relative;
+        display: grid;
+        grid-template-columns: 40% 60%;
+        text-align: justify;
+        width: 90%;
+    }
+
+
+</style>
+
+
+<div id="notification">
+    <h1 style="font-size: 1.5em; padding: 0; margin: 0;">Before you go!</h1>
+    <h3>You should submit your score and see where you rank on the leaderboard!</h3>
+    <p>The fields are optional, so it's cool if you want to remain anonymous.</p>
+    <p>Press ESC to close this menu and go back to the game(you may need to click the game)</p>
+    <section id="form-info">
+        <label for="player" style='width:10em'>Player Name:</label>
+        <input id="player" type="text" maxlength="32" placeholder="Player Name">
+        <hr><hr>
+        <label for="location" style='width:10em'>Location:</label>
+        <input id="location" type="text" maxlength="64"  placeholder="Whereabouts are you from?">
+    </section>
+    <button class="nav-button" style="margin-top: 2em;align-self: flex-end" onclick="submitScore(this.parentElement)">Send it!</button>
+
+    <button class="nav-button" onclick="fetchAndReplace('/brickbreaker/leaderboard?nav', '{}', null)" style="margin-top: 2em;align-self: flex-end">
+        Go to leaderboard!
+    </button>
+</div>

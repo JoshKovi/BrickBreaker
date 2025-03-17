@@ -12,13 +12,17 @@ export function initializeGame() {
     const gameObjects = new GameObjects(0, display);
     const motion = new Motion(gameObjects);
     const controller = new Controller(gameObjects);
-    window.addEventListener("keydown", controller.handler);
-    window.addEventListener("keyup", controller.handler);
+
+    canvas.addEventListener("keydown", controller.handler);
+    canvas.addEventListener("keyup", controller.handler);
+
     const engine = new Engine(display, gameObjects, controller,  motion);
     const canvasElement = document.getElementById("game-canvas");
 }
 window.initializeGame = initializeGame;
 
+const canvas = document.getElementById("game-canvas");
+canvas.addEventListener("click", ()=> canvas.focus());
 if(document.readyState === "complete"){
     console.log("Ready State was complete, initializing directly.")
     initializeGame();
@@ -26,5 +30,7 @@ if(document.readyState === "complete"){
     console.log("Ready State was not complete, adding listener.")
     window.addEventListener('load', initializeGame);
 }
+
+
 
 
