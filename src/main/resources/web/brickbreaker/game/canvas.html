@@ -1,0 +1,60 @@
+
+
+<style>
+    #canvas-container{
+        display: flex;
+        width: 100%%;
+        height: 80%%;
+        justify-self: center;
+        justify-content: center;
+        align-content: center;
+        margin-top: 2em;
+    }
+    #game-canvas{
+        width: 100%%;
+        height: 100%%;
+        min-width: 100px;
+        min-height: 80px;
+        aspect-ratio: inherit;
+    }
+
+</style>
+
+
+<section id="canvas-container">
+    <canvas id="game-canvas" tabindex="0"></canvas>
+    <section id="notification-window" hidden>%s</section>
+
+    <script type="module" src="/brickbreaker?Display.js"></script>
+    <script type="module" src="/brickbreaker?GameObjects.js"></script>
+    <script type="module" src="/brickbreaker?Motion.js"></script>
+    <script type="module" src="/brickbreaker?Engine.js"></script>
+    <script type="module" src="/brickbreaker?Controller.js"></script>
+    <script type="module" src="/brickbreaker?Main.js"></script>
+    <script>
+        try {
+            initializeGame();
+        } catch(error) {
+            console.log("Sometimes you have to try to force things!");
+        }
+
+        async function submitScore(form){
+            let score = sessionStorage.getItem("score");
+            const playerName = form.querySelectorAll("#player")[0].value;
+            const location = form.querySelectorAll("#location")[0].value;
+            const response = await fetch("/brickbreaker?lbEntry", {
+                method : 'Post',
+                headers : {
+                    'Content-Type' : 'application/json'
+                }, body : JSON.stringify({"LeaderBoard-Entry":[{"score" : score, "player":playerName, "location":location}]})
+            }).then(response => {
+                if(!response.ok) {
+                    alert("Something went wrong with the submission!");
+                } else {
+                    fetchAndReplace("/brickbreaker/leaderboard?nav", "{}", null);
+                }
+            })
+        }
+    </script>
+
+</section>

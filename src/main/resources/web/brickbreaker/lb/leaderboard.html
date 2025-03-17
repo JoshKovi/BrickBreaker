@@ -1,0 +1,105 @@
+
+
+<style>
+    #leaderboard-section{
+        width: 80%%;
+        background: rgba(128, 128, 128, 0.18);
+
+    }
+
+    #leader-buttons{
+        display: flex;
+        justify-self:center;
+        gap:1em;
+        margin-bottom:.25em;
+    }
+
+    .leader-button{
+        width:10em;
+        border-radius: .75em;
+        height: 2em;
+        background:linear-gradient( 42deg, #ccff99, #cceeff);
+    }
+
+    .leader-button:hover{
+        background: linear-gradient( 42deg, #a4f851, #51c2fa);
+    }
+
+    .leader-columns{
+        display:grid;
+        grid-template-columns: 15%% 30%% 25%% 30%%;
+    }
+
+    .leader-header{
+        font-size:2em;
+    }
+
+    .leader-entry{
+        text-align:center;
+        padding-bottom:0;
+
+        resize:none;
+    }
+
+    textarea {
+        padding:0;
+        max-height:1.5em;
+        align-content:center;
+    }
+</style>
+<script>
+    let currentPage = 0;
+    let sortByColumn = 0;
+    function getAdjacentPage(next){
+        if(next){
+            currentPage += 1;
+            fetchAndReplace(`/brickbreaker/leaderboard?page=${currentPage}`, "{}", "leaderboard-entries");
+        } else if(!next && currentPage > 0){
+            currentPage -= 1;
+            fetchAndReplace(`/brickbreaker/leaderboard?page=${currentPage}`, "{}", "leaderboard-entries");
+        }
+    }
+
+    function reorder(element, column){
+        sortByColumn = column;
+        let entryContainer = document.getElementById("leaderboard-entries");
+        let entries = Array.from(entryContainer.children);
+        if(element.value === 'true'){
+            entries.sort(compareEntries);
+            element.value = 'false';
+        } else {
+            entries.reverse(compareEntries);
+            element.value = 'true';
+        }
+        entryContainer.replaceChildren(...entries);
+    }
+
+    function compareEntries(a, b){
+        let entry1 = Array.from(a.children)[sortByColumn];
+        let entry2 = Array.from(b.children)[sortByColumn];
+        if(entry1.classList.contains("num")){
+            if(Number.parseInt(entry1.value) < Number.parseInt(entry2.value)) return -1;
+            if(Number.parseInt(entry1.value) > Number.parseInt(entry2.value)) return 1;
+            return 0;
+        }
+        if(entry1.value < entry2.value) return -1;
+        if(entry1.value > entry2.value) return 1;
+        return 0;
+    }
+
+</script>
+
+<section id="leaderboard-section">
+    <section id="leader-buttons">
+        <button class="leader-button" onclick="getAdjacentPage(false)">Last</button>
+        <button class="leader-button" onclick="getAdjacentPage(true)">Next</button>
+    </section>
+    <section id="leader-header-section" class="leader-columns">
+        <button class="leader-header" value="true" onclick="reorder(this, 0)">Score</button>
+        <button class="leader-header" value="true" onclick="reorder(this, 1)">Player</button>
+        <button class="leader-header" value="true" onclick="reorder(this, 2)">Date</button>
+        <button class="leader-header" value="true" onclick="reorder(this, 3)">Location</button>
+    </section>
+        <section id="leaderboard-entries">%s</section>
+</section>
+

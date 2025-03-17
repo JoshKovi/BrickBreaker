@@ -8,10 +8,7 @@ import com.kovisoft.servercommon.utilities.FileUtilities;
 import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.awt.image.BufferedImage;
 
 public class BBhtml extends StaticHtml {
@@ -22,18 +19,22 @@ public class BBhtml extends StaticHtml {
     public String BASE_CSS = "";
     public String BASE_JS = "";
 
-    public final String BB_RESOURCES = getResourcePath("web/brickbreaker");
-    public String CANVAS_HTML = FileUtilities.getFileContent(BB_RESOURCES + "/canvas.html");
+    public final String BB_RESOURCES_GAME = getResourcePath("web/brickbreaker/game");
+    public final String BB_RESOURCES_LB = getResourcePath("web/brickbreaker/lb");
+    public String CANVAS_HTML = FileUtilities.getFileContent(BB_RESOURCES_GAME + "/canvas.html");
+    public String NOTIFICATION_HTML = FileUtilities.getFileContent(BB_RESOURCES_GAME + "/notification.html");
+    public String LEADER_HTML = FileUtilities.getFileContent(BB_RESOURCES_LB + "/leaderboard.html");
+    public String LEADER_ENTRY = FileUtilities.getFileContent(BB_RESOURCES_LB + "/leaderboard-entry.html");
 
-    public String CONTROLLER = FileUtilities.getFileContent(BB_RESOURCES + "/Controller.js");
-    public String DISPLAY = FileUtilities.getFileContent(BB_RESOURCES + "/Display.js");
-    public String ENGINE = FileUtilities.getFileContent(BB_RESOURCES + "/Engine.js");
-    public String GAME_OBJECTS = FileUtilities.getFileContent(BB_RESOURCES + "/GameObjects.js");
-    public String MOTION = FileUtilities.getFileContent(BB_RESOURCES + "/Motion.js");
-    public String MAIN = FileUtilities.getFileContent(BB_RESOURCES + "/Main.js");
+    public String CONTROLLER = FileUtilities.getFileContent(BB_RESOURCES_GAME + "/Controller.js");
+    public String DISPLAY = FileUtilities.getFileContent(BB_RESOURCES_GAME + "/Display.js");
+    public String ENGINE = FileUtilities.getFileContent(BB_RESOURCES_GAME + "/Engine.js");
+    public String GAME_OBJECTS = FileUtilities.getFileContent(BB_RESOURCES_GAME + "/GameObjects.js");
+    public String MOTION = FileUtilities.getFileContent(BB_RESOURCES_GAME + "/Motion.js");
+    public String MAIN = FileUtilities.getFileContent(BB_RESOURCES_GAME + "/Main.js");
 
     public BufferedImage BASE_LOGO;
-    public HashMap<String, String> resourceMap = new HashMap<>();
+    public TreeMap<String, String> resourceMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     protected boolean successfulGet;
 
     //Default Resources
@@ -96,8 +97,9 @@ public class BBhtml extends StaticHtml {
     }
 
     protected void updateResourceMap() {
-        resourceMap.put("", String.format(this.BASE_HTML, CANVAS_HTML));
-        resourceMap.put("embedded", CANVAS_HTML);
+        String embedded = String.format(CANVAS_HTML, NOTIFICATION_HTML);
+        resourceMap.put("", String.format(this.BASE_HTML, embedded));
+        resourceMap.put("embedded", embedded);
         resourceMap.put("home.js", this.BASE_JS);
         resourceMap.put("home.css", this.BASE_CSS);
         resourceMap.put("Display.js", DISPLAY);
@@ -106,6 +108,8 @@ public class BBhtml extends StaticHtml {
         resourceMap.put("Controller.js", CONTROLLER);
         resourceMap.put("Engine.js", ENGINE);
         resourceMap.put("Main.js", MAIN);
+        resourceMap.put("leaderboard", LEADER_HTML);
+        resourceMap.put("notification", NOTIFICATION_HTML);
     }
 
     private void replacePaths(){

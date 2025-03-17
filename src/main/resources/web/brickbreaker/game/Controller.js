@@ -42,10 +42,12 @@ export class Controller{
 
     handleKeyDown(event){
         let paused = this.gameObject.isPaused();
+        console.log("Key code entered: " + event.keyCode);
         switch(event.keyCode){
             case 32: //Spacebar
                 if(this.gameObject.playerLives0()){
-                    console.log("Get DB") //Ill add this later
+                    sessionStorage.setItem("score", this.gameObject.player.score);
+                    document.getElementById("notification-window").hidden = false;
                 } else {
                     this.gameObject.pause(!paused);
                 }
@@ -74,6 +76,11 @@ export class Controller{
             case 16:
                 if(this.gameObject.playerLives0()){
                     this.gameObject.restartLevel = true;
+                }
+                break;
+            case 27: //Escape key
+                if(this.gameObject.playerLives0()){
+                    document.getElementById("notification-window").hidden = true;
                 }
                 break;
             default:

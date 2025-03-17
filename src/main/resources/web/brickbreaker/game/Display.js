@@ -140,7 +140,7 @@ export class Display{
         this.ctx.fillText("You died!", center.x, center.y);
         this.ctx.fillText("Restart level with {Shift}", center.x, center.y + 40);
         this.ctx.fillText("Restart game with {Enter}", center.x, center.y + 80);
-        //this.ctx.fillText("See leader board with {Space}", center.x, center.y + 120);
+        this.ctx.fillText("See leader board with {Space}", center.x, center.y + 120);
 
     }
 
