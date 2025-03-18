@@ -1,7 +1,7 @@
 package com.kovisoft.brickbreaker.exports.records;
 
-import com.kovisoft.portwebdatabase.data.Records;
-import com.kovisoft.portwebdatabase.data.SQLRecord;
+import com.kovisoft.pg.database.data.Records;
+import com.kovisoft.pg.database.data.SQLRecord;
 
 import java.time.LocalDateTime;
 import java.util.Map;

@@ -2,8 +2,8 @@ package com.kovisoft.brickbreaker.handlers;
 
 import com.kovisoft.brickbreaker.exports.records.LeaderBoard;
 import com.kovisoft.brickbreaker.javaHtml.BBhtml;
-import com.kovisoft.portwebdatabase.data.exports.DBManagerFactory;
-import com.kovisoft.portwebdatabase.data.exports.DBOperations;
+import com.kovisoft.pg.database.data.exports.DBManagerFactory;
+import com.kovisoft.pg.database.data.exports.DBOperations;
 import com.kovisoft.servercommon.baseabstract.AbstractHandler;
 import com.kovisoft.servercommon.utilities.RequestHandler;
 import com.sun.net.httpserver.HttpExchange;
