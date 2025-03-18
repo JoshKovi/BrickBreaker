@@ -1,6 +1,6 @@
 module BrickBreaker {
     requires ServerCommon;
-    requires PortWebDatabase;
+    requires PgDatabase;
     requires Logger;
     requires jdk.httpserver;
     requires java.net.http;
@@ -8,5 +8,5 @@ module BrickBreaker {
     exports com.kovisoft.brickbreaker.exports;
     exports com.kovisoft.brickbreaker.exports.records;
 
-    opens com.kovisoft.brickbreaker.exports.records to PortWebDatabase;
+    opens com.kovisoft.brickbreaker.exports.records to PgDatabase;
 }
