@@ -130,6 +130,8 @@ export class Display{
         this.ctx.textAlign = "center";
         let center = this.getCenter(false);
         this.ctx.fillText("Paused (Press {Space} to resume)", center.x, center.y);
+        this.ctx.font = '20px Arial'
+        this.ctx.fillText("Hint: The paddle adds horizontal movement to the ball if its moving.", center.x, center.y + 20);
     }
 
     drawDead(){
@@ -141,7 +143,6 @@ export class Display{
         this.ctx.fillText("Restart level with {Shift}", center.x, center.y + 40);
         this.ctx.fillText("Restart game with {Enter}", center.x, center.y + 80);
         this.ctx.fillText("See leader board with {Space}", center.x, center.y + 120);
-
     }
 
 }

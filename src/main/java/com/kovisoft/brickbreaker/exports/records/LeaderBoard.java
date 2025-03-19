@@ -11,9 +11,9 @@ import java.util.TreeMap;
 public record LeaderBoard(Long id, String player, Long score, String location, LocalDateTime dateAchieved) implements SQLRecord {
 
     public LeaderBoard {
-        player = (player != null) ? player.replaceAll("([^A-Za-z0-9_ ])+", "") : "Anonymous";
+        player = (player != null && !player.isBlank()) ? player.replaceAll("([^A-Za-z0-9_ ])+", "") : "Anonymous";
         score = (score != null) ? score : 0;
-        location = (location != null) ? location.replaceAll("([^A-Za-z0-9_ ,])+", "") : "Somewhere in the world";
+        location = (location != null && !location.isBlank()) ? location.replaceAll("([^A-Za-z0-9_ ,])+", "") : "Somewhere in the world";
         dateAchieved = (dateAchieved == null) ? LocalDateTime.now() : dateAchieved;
     }
     public LeaderBoard(String player, Long score){

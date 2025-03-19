@@ -31,7 +31,7 @@ export class GameObjects {
 
         this.d_ball = {
             radius: 17,
-            center: {x: this.center.x, y: this.center.y * 2 - 220},
+            center: {x: this.center.x, y: this.center.y * 2 - 240},
             linear_speed: 350 / fps,
             deltaX: NaN,
             deltaY: NaN

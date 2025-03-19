@@ -13,12 +13,7 @@ export class Motion{
         for(let i = 0; i < this.go.balls.length; i++){
             let ball = this.go.balls[i];
             if(Number.isNaN(ball.deltaX) || Number.isNaN(ball.deltaY)){
-                if(Math.random() > .5){
-                    ball.deltaX = ball.linear_speed * (Math.random() + .1);
-                } else {
-                    ball.deltaX = -ball.linear_speed * (Math.random() + .1);
-                }
-
+                ball.deltaX = -ball.linear_speed * (Math.random() - .5);
                 ball.deltaY = ball.linear_speed * (Math.random() + .85);
             }
             ball.deltaX = Math.min(ball.linear_speed, ball.deltaX);
