@@ -2,14 +2,17 @@ package com.kovisoft.brickbreaker.handlers;
 
 import com.kovisoft.brickbreaker.exports.records.LeaderBoard;
 import com.kovisoft.pg.database.data.exports.DBManagerFactory;
+import com.kovisoft.pg.database.data.exports.DBOperations;
 import com.kovisoft.servercommon.baseabstract.AbstractHandler;
 import com.kovisoft.brickbreaker.javaHtml.BBhtml;
 import com.kovisoft.servercommon.utilities.RequestHandler;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,10 +39,24 @@ public class BrickBreakerHandler extends AbstractHandler {
         } else if(key.equals("lbEntry")){
             Map<String, Object> leaderEntry = RequestHandler.parseRequestBody(exchange).get("LeaderBoard-Entry").getFirst();
             try {
+                DBOperations userOps = DBManagerFactory.getDBOperations("portfolio-user");
                 leaderEntry.put("dateAchieved", LocalDateTime.now());
                 leaderEntry.remove("id");
                 LeaderBoard lb = new LeaderBoard(leaderEntry);
-                LeaderBoard lbDb = DBManagerFactory.getDBOperations("portfolio-user").addRecord(lb);
+
+                //Check if this is a duplicate input.
+                List<LeaderBoard> lbs = userOps.getMatchByColumnNames(lb, List.of("player", "score", "location"));
+                for(LeaderBoard dbLb : lbs){
+                    Duration duration = Duration.between(dbLb.dateAchieved(), lb.dateAchieved());
+                    if(duration.toMinutes() < 2) {
+                        logger.info(String.format("Looks like leaderboard entry was duplicate. %s %s", lb, dbLb));
+                        exchange.sendResponseHeaders(200, -1);
+                        return;
+                    }
+                }
+
+                // Not duplicate, add
+                LeaderBoard lbDb = userOps.addRecord(lb);
                 logger.info(String.format("Sent %s to db and got back %s from the add attempt", lb, lbDb));
                 exchange.sendResponseHeaders(200, -1);
             } catch (NullPointerException npe){
