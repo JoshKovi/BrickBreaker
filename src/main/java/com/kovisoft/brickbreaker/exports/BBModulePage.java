@@ -5,6 +5,7 @@ import com.kovisoft.brickbreaker.handlers.BrickBreakerHandler;
 import com.kovisoft.brickbreaker.handlers.LeaderBoardHandler;
 import com.kovisoft.brickbreaker.utils.HttpClientSetup;
 import com.kovisoft.logger.exports.LoggerFactory;
+import com.kovisoft.pg.database.data.exports.AbstractMigration;
 import com.kovisoft.servercommon.interfaces.ModulePage;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -38,5 +39,10 @@ public class BBModulePage implements ModulePage {
         return new HashMap<>(){{
             put(LeaderBoard.class, "GRANT SELECT, INSERT ON TABLE ");
         }};
+    }
+
+    @Override
+    public AbstractMigration getMostRecentMigration(){
+        return new FirstBBMigration();
     }
 }
