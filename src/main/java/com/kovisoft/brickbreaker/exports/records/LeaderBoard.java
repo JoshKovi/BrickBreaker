@@ -35,6 +35,11 @@ public record LeaderBoard(Long id, String player, Long score, String location, L
     }
 
     @Override
+    public Long getPrimaryKey() {
+        return this.id;
+    }
+
+    @Override
     public <T extends SQLRecord> T getNewRecord(Map<String, Object> map) {
         TreeMap<String, Object> tm = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         tm.putAll(map);
